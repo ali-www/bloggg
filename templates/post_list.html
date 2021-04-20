@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+
+
+
+<style>
+    .img_height {
+        height: 400px;
+    }
+</style>
+<div id="carouselExampleFade" class="carousel slide carousel-fade img_height" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="{% static 'img/img_3.jpg' %}" class="d-block w-100 img_height" alt="...">
+        </div>
+        <div class="carousel-item">
+            <img src="{% static 'img/img_2.jpg' %}" class="d-block w-100 img_height" alt="...">
+        </div>
+        <div class="carousel-item">
+            <img src="{% static 'img/img_3.jpg' %}" class="d-block w-100 img_height" alt="...">
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div><br>
+<hr>
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            <span><a href="{% url 'blog:post_list' %}" class="btn btn-outline-dark">All</a></span>&nbsp;
+            <!--all category -->
+            {% for cat in categories %}
+
+            <span> <a href="{{ cat.get_absolute_url }}" class="btn btn-outline-success">{{ cat.name }}</a></span>&nbsp;
+
+            {% endfor %}
+
+            <!-- category-->
+            <p>{% if category %}{{ category.name }}{% else %} all posts {% endif %}</p>
+
+
+
+            <div class="row">
+                {% for post in posts %}
+                <div class="col-md-6">
+                    <div class="card ">
+
+                        <!--============================================================ start video -->
+                        <video height=200 style="width: 100%;" controls>
+                            <source src="{{post.video.url}}" type="video/mp4">
+
+
+                        </video>
+                        <!--============================================================ end video -->
+                        <div class="card-body">
+                            <h5 class="card-title">{{post.title}}</h5>
+                            <small>Likes : ({{post.like_count}})</small> &nbsp;
+                            <small> Views Count ({{post.post_views}})</small>
+                            <p class="card-text"></p>
+                            <a href="{{ post.get_absolute_url }}" class="btn btn-outline-secondary">Read More...</a>
+                        </div>
+                    </div><br>
+                </div>
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<!--=============================================================================================================-->
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            {{ page_obj.number }}
+        </span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+<!--=============================================================================================================-->
+
+<hr>
+
+{% endblock body %}

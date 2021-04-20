@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block body %}
+
+
+
+
+
+<form method="post" id="form">
+    {% csrf_token %}
+    {{form.as_p}}
+    <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-outline-success">Send</button>
+    </div>
+
+</form>
+<br>
+<br>
+<hr>
+
+
+
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    var j = $.noConflict();
+    const form = document.getElementById('form');
+    form.addEventListener('submit', sendContact);
+
+    function sendContact(e) {
+        e.preventDefault();
+        j.ajax({
+            type: 'POST',
+            url: "{% url 'blog:contact' %}",
+            data: j('#form').serialize(),
+            dataType: 'json',
+            success: contactsuccess,
+        })
+    }
+    function contactsuccess(data) {
+        if (data.msg == 'success') {
+            form.reset();
+            alert('your messages its successed');
+        }
+    }
+</script>
+{% endblock %}

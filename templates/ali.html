@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block body %}
+<style>
+   
+    body{background-color: rgb(232, 250, 250);}
+  </style>
+
+<div class="shadow p-3 mb-5 bg-white rounded">
+    
+<h3>Categories</h3>
+    <ul>
+        <li>
+        <h4> <a href="{% url 'blog:post_list' %}"  class="text-reset text-decoration-none">All</a></h4>
+        </li>
+    {% for c in categories %}
+        <li>
+       <p> <a href="{{ c.get_absolute_url }}"  class="text-reset text-decoration-none">{{ c.name }}</a></p>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+
+
+<br>
+<div>
+    <p>{% if category %}{{ category.name }}{% else %} all posts {% endif %}</p>
+
+    <div class="row">
+        {% for x in posts %}
+        <div class="col-md-4">
+            <h6> <a href="{{ x.get_absolute_url }}" class="text-reset text-decoration-none">{{x.title}}</a></h6>
+        </div>
+   
+        {% endfor %}
+    </div>
+  
+   
+   
+</div>
+</div>
+
+{% endblock %}
+
+
+
+
+  {% include 'nav.html' %}
+   <div class="container">
+       {% block body %}
+       {% endblock %}
+   </div>
+    {% include 'footer.html' %}
+
+  <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+    {% block scripts %}
+    {% endblock %}
+
+
+
+       <div class="row">
+
+      <div class="col-12">
+          <h2 class="text-center text-uppercase shadow p-3 mb-5 bg-white rounded">{{posts.title}}</h2>
+         <div class="shadow p-3 mb-5 bg-white rounded">
+          <p>{{posts.body}}</p>
+          <!---====================================================================-->
+          Like :
+          <span class="" id="like_count"> {{posts.like_count}}</span>
+          <button class="btn btn-link text-dark p-0 border-0 btn-outline-light" id="like-button" value="{{posts.id}}">
+            {% csrf_token %}
+              <i class="material-icons" style="font-size:48px;color:red">favorite</i>
+          </button>
+          <!--=====================================================================-->
+          <p class="text-muted"> The author : {{posts.author}}</p>
+          <p class="text-muted">{{posts.date}}</p>
+         </div>
+      </div>
+    
+  </div>
